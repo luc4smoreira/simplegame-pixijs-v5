@@ -21,31 +21,73 @@ export default class GameUnit {
 	}
 
 
+
+
 	execute(delta) {
+		const stickThresholding = 0.05;
+		let vector = {
+			x: this._destination.x - this._sprite.x,
+			y: this._destination.y - this._sprite.y
+		};
 
-		if(this._sprite.x < this._destination.x) {
-			this._sprite.x += this._speed;
-		}
-		else if(this._sprite.x > this._destination.x) {
-			this._sprite.x -= this._speed;
-		}
+		let h = Math.sqrt(vector.x * vector.x + vector.y * vector.y);
 
-		if(this._sprite.y < this._destination.y) {
-			this._sprite.y += this._speed;
-		}
-		else if(this._sprite.y > this._destination.y) {
-			this._sprite.y -= this._speed;
-		}
+		if(h > 0) {
+			let component = {
+				x: (this._speed * vector.x) / h,
+				y: (this._speed * vector.y) / h,
+			};
 
 
-		if(Math.abs(this._destination.x - this._sprite.x) < this._speed) {
-			this._sprite.x = this._destination.x;
+			if(Math.abs(component.x) < stickThresholding) {
+				this._sprite.x = this._destination.x;
+			}
+			else {
+				this._sprite.x += component.x;
+			}
+
+
+			if(Math.abs(component.y) < stickThresholding) {
+				this._sprite.y = this._destination.y;
+			}
+			else {
+				this._sprite.y += component.y;
+			}
+		}
+		else {
+			//in position
 		}
 
-		if(Math.abs(this._destination.y - this._sprite.y) < this._speed) {
-			this._sprite.y= this._destination.y;
 
-		}
+
+		// //
+		// this._sprite.x += component.x;
+		// this._sprite.y += component.y;
+
+
+		// if(this._sprite.x < this._destination.x) {
+		// 	this._sprite.x += this._speed;
+		// }
+		// else if(this._sprite.x > this._destination.x) {
+		// 	this._sprite.x -= this._speed;
+		// }
+		//
+		// if(this._sprite.y < this._destination.y) {
+		// 	this._sprite.y += this._speed;
+		// }
+		// else if(this._sprite.y > this._destination.y) {
+		// 	this._sprite.y -= this._speed;
+		// }
+		//
+		//
+		// if(Math.abs(this._destination.x - this._sprite.x) < this._speed) {
+		// 	this._sprite.x = this._destination.x;
+		// }
+		//
+		// if(Math.abs(this._destination.y - this._sprite.y) < this._speed) {
+		// 	this._sprite.y= this._destination.y;
+		// }
+
 
 	}
 
