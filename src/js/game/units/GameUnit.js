@@ -8,11 +8,13 @@ export default class GameUnit {
 
 		let graphics = new PIXI.Graphics();
 		graphics.beginFill(0xff0000);
-		graphics.drawRect(0, 0, 50, 50);
+		graphics.drawRect(-25, -25, 50, 50);
 
 		this._sprite.addChild(graphics);
 
 		this._sprite.anchor.set(0.5);
+		this._sprite.x = x;
+		this._sprite.y = y;
 
 		world.addChild(this._sprite);
 		this._destination = new PIXI.Point(x, y);

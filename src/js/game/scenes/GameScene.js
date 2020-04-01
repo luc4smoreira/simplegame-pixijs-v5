@@ -1,11 +1,14 @@
 import Scene from "../ui/Scene";
 import GameUnit from "../units/GameUnit";
+import MarkHud from "../hud/MarkHud";
 
 export default class GameScene extends Scene{
 
 	constructor(PIXI, gameWidth, gameHeight) {
 		super(PIXI);
 		this._units = [];
+		this._hudObjects = [];
+
 		this.init(gameWidth, gameHeight);
 
 	}
@@ -23,11 +26,9 @@ export default class GameScene extends Scene{
 		this.scene.interactive = true;
 		// this.scene.interaction = true;
 
-		this.mark = new this.PIXI.Graphics();
-		this.mark.beginFill(0xFF0000);
-		this.mark.drawCircle(0, 0, 10);
-		this.mark.visible = false;
-		this.scene.addChild(this.mark);
+		let mark = new MarkHud(this.PIXI, this.scene);
+		this.addHudObject(mark);
+
 
 		this.scene.on("click", (event) => {
 			let point = event.data.getLocalPosition(this.scene);
@@ -35,11 +36,7 @@ export default class GameScene extends Scene{
 			let pointFloor = point.copyFrom(point);
 			pointFloor.set(Math.floor(point.x), Math.floor(point.y));
 
-			this.mark.visible = true;
-
-			this.mark.x = point.x;
-			this.mark.y = point.y;
-
+			mark.showMark(pointFloor);
 
 			console.log(`point:(${pointFloor.x}, ${pointFloor.y})`);
 			unit1.setDestination(pointFloor);
@@ -50,10 +47,18 @@ export default class GameScene extends Scene{
 		this._units.push(unit);
 	}
 
+	addHudObject(object) {
+		this._hudObjects.push(object);
+	}
+
 
 	execute(delta) {
 
 		this._units.forEach((value, index)=> {
+			value.execute(delta);
+		});
+
+		this._hudObjects.forEach((value, index) => {
 			value.execute(delta);
 		});
 
