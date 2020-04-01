@@ -5,6 +5,14 @@ class UI {
 		this.gameHeight = gameHeight;
 	}
 
+	static clearDisplayObject(displayObject) {
+
+		while(displayObject.children.length > 0) {
+			displayObject.removeChildAt(0)
+		}
+	}
+
+
 	static createButton(PIXI, text) {
 
 		let container = new  PIXI.Container();
