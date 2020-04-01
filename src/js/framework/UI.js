@@ -1,9 +1,9 @@
 class UI {
 
-	constructor() {
+	constructor(gameWidth, gameHeight) {
+		this.gameWidth = gameWidth;
+		this.gameHeight = gameHeight;
 	}
-
-
 
 	static createButton(PIXI, text) {
 
@@ -24,6 +24,37 @@ class UI {
 		container.buttonMode = true;
 
 		return new Button(container, graphics, txt);
+	}
+
+
+
+	fitGameScaleToWindow(htmlContainer, pixiApp) {
+		const w = htmlContainer.offsetWidth;
+		const h = htmlContainer.offsetHeight;
+
+		let aspectWindow = w / h;
+		let aspectGame = this.gameWidth / this.gameHeight;
+
+
+		let proportion;
+		if(aspectWindow > aspectGame) {
+			proportion = h / this.gameHeight;
+		}
+		else {
+			proportion = w / this.gameWidth;
+		}
+
+
+		pixiApp.stage.scale.x = proportion;
+		pixiApp.stage.scale.y = proportion;
+
+		//center stage
+		pixiApp.stage.x = (w - (this.gameWidth * proportion)) / 2;
+		pixiApp.stage.y = (h - (this.gameHeight * proportion)) / 2;
+
+
+		pixiApp.renderer.resize(w, h);
+
 	}
 }
 
