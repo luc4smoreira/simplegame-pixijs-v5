@@ -1,7 +1,8 @@
 import * as PIXI from "pixi.js"
 
-import MainMenu from "./game/MainMenu"
-import {UI} from "./framework/UI";
+import MainMenu from "./game/scenes/MainMenu"
+import {UI} from "./game/ui/UI";
+import GameScene from "./game/scenes/GameScene";
 
 
 window.onload = function() {
@@ -12,12 +13,25 @@ window.onload = function() {
 	let app = new PIXI.Application({width: gameWidth, height: gameHeight, backgroundColor: 0xAAAAAA });
 	htmlElment.appendChild(app.view);
 
-
-
+	//
+	//
 	let main = new MainMenu(PIXI);
 	app.stage.addChild(main.scene);
-
 	main.center(app);
+
+
+	let game = new GameScene(PIXI, gameWidth, gameHeight);
+
+	//
+	main.onStartGame(function() {
+		UI.clearDisplayObject(app.stage);
+		app.stage.addChild(game.scene);
+
+		app.ticker.add(function(delta) {
+			game.execute(delta);
+		})
+	});
+
 
 
 	let ui = new UI(gameWidth, gameHeight);
@@ -26,6 +40,7 @@ window.onload = function() {
 	window.onresize = () => {
 		ui.fitGameScaleToWindow(htmlElment, app);
 	};
+
 
 
 };

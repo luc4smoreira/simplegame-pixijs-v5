@@ -7,10 +7,9 @@ export default class Scene {
 		this.PIXI = PIXI;
 	}
 
-	execute() {
+	execute(delta) {
 
 	}
-
 	get scene() {
 		return this._scene;
 	}
