@@ -1,4 +1,4 @@
-import UI from "../framework/UI";
+import {UI, Button} from "../framework/UI";
 
 export default class MainMenu {
 
@@ -12,6 +12,7 @@ export default class MainMenu {
 
 
 		app.stage.addChild(button.container);
+
 		button.container.x = app.view.width / 2 - button.container.width / 2;
 		button.container.y = app.view.height / 2  - button.container.height / 2;
 
