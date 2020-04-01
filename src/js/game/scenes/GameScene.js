@@ -20,10 +20,11 @@ export default class GameScene extends Scene{
 		background.drawRect(0, 0, gameWidth, gameHeight);
 		this.scene.addChild(background);
 
-		let unit1 = new GameUnit(1, 100, 100, this.scene, this.PIXI);
+		let unit1 = new GameUnit(5, 5, 100, 100, this.scene, this.PIXI);
 		this.addUnit(unit1);
 
 		this.scene.interactive = true;
+		this.scene.buttonMode = true;
 		// this.scene.interaction = true;
 
 		let mark = new MarkHud(this.PIXI, this.scene);
