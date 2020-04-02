@@ -1,16 +1,32 @@
 
 export default class GameUnit {
 
+
+
 	constructor(speed, rotationSpeed, x, y, world, PIXI) {
 		this._speed = speed;
 
 		this._sprite = new PIXI.Sprite();
 
 		let graphics = new PIXI.Graphics();
-		graphics.beginFill(0xff0000);
-		graphics.drawRoundedRect(-30, -30, 60, 60, 10);
+		graphics.beginFill(0x999999);
+		graphics.drawRoundedRect(-16, -16, 32, 32, 5);
+
+		//turret
 		graphics.beginFill(0x000000);
-		graphics.drawRoundedRect(-15, -10, 80, 20, 10);
+		graphics.drawRoundedRect(-8, -5, 40, 10, 5);
+
+		//sight
+		let dist = 80;
+		let sigthSize = 5;
+
+		graphics.beginFill(0xff0000);
+		graphics.drawRect(dist, -sigthSize-3, 1, sigthSize);
+		graphics.drawRect(dist, 3, 1, sigthSize);
+
+		graphics.drawRect(dist-sigthSize-3, 0, sigthSize, 1);
+		graphics.drawRect(dist+3, 0, sigthSize, 1);
+
 
 		this._sprite.addChild(graphics);
 
@@ -103,7 +119,6 @@ export default class GameUnit {
 		// if(Math.abs(this._destination.y - this._sprite.y) < this._speed) {
 		// 	this._sprite.y= this._destination.y;
 		// }
-
 
 	}
 
