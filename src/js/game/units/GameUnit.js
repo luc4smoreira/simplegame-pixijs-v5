@@ -1,3 +1,4 @@
+import Trigonometry from "./Trigonometry";
 
 export default class GameUnit {
 
@@ -5,6 +6,7 @@ export default class GameUnit {
 
 	constructor(speed, rotationSpeed, x, y, world, PIXI) {
 		this._speed = speed;
+		this._rotationSpeed = rotationSpeed;
 
 		this._sprite = new PIXI.Sprite();
 
@@ -39,56 +41,41 @@ export default class GameUnit {
 	}
 
 
-
-	radToAngle(rad) {
-		return (180*rad)/Math.PI;
-	}
-
-	angleToRad(angle) {
-		return angle * (Math.PI / 180);
-	}
-
-
 	execute(delta) {
-
 
 		let vector = {
 			x: this._destination.x - this._sprite.x,
 			y: this._destination.y - this._sprite.y
 		};
 
-
 		//angle
-		let tanAngle = vector.y / vector.x;
-		let arcTan = Math.atan(tanAngle);
-		let angle = this.radToAngle(arcTan);
-		if(vector.x < 0) {
-			angle+=180;
-		}
+		let angle = Trigonometry.getAngle(vector);
 
+		let h = Trigonometry.getDistance(vector);
 
-
-		let h = Math.sqrt(vector.x * vector.x + vector.y * vector.y);
 
 		if(h > this._speed) {
 
 			this._sprite.angle = angle;
 
-			let component = {
-				x: (this._speed * vector.x) / h,
-				y: (this._speed * vector.y) / h,
-			};
-
+			let component = Trigonometry.getAxisSpeed(vector, h, this._speed);
 
 			this._sprite.x += component.x;
 			this._sprite.y += component.y;
+
+
 		}
 		else {
 			//in position
 			console.log("in position");
 			this._sprite.x = this._destination.x;
 			this._sprite.y = this._destination.y;
+
 		}
+
+
+
+
 
 
 
