@@ -10,8 +10,6 @@ export default class GameScene extends Scene{
 		this._world = new World();
 		this._hudObjects = [];
 
-		this.init(gameWidth, gameHeight);
-
 	}
 
 	init(gameWidth, gameHeight) {
@@ -21,7 +19,7 @@ export default class GameScene extends Scene{
 		background.drawRect(0, 0, gameWidth, gameHeight);
 		this.scene.addChild(background);
 
-		let unit1 = new GameUnit(5, 5, 100, 100, this.scene, this.PIXI);
+		let unit1 = new GameUnit(5, 5, 250, 300, this.scene, this.PIXI);
 		this.addUnit(unit1);
 
 		let unit2 = new GameUnit(5, 5, 200, 200, this.scene, this.PIXI, 0xff0000);
@@ -37,6 +35,8 @@ export default class GameScene extends Scene{
 		this.addHudObject(mark);
 
 
+
+
 		this.scene.on("click", (event) => {
 			let point = event.data.getLocalPosition(this.scene);
 
@@ -45,8 +45,8 @@ export default class GameScene extends Scene{
 
 			mark.showMark(pointFloor);
 
-			console.log(`point:(${pointFloor.x}, ${pointFloor.y})`);
-			unit1.setDestination(pointFloor);
+			// console.log(`point:(${pointFloor.x}, ${pointFloor.y})`);
+			 unit1.setDestination(pointFloor);
 		});
 	}
 
@@ -60,14 +60,30 @@ export default class GameScene extends Scene{
 	}
 
 
+	onGameOver(callback) {
+		this._onGameOver = callback;
+	}
+
+
 	execute(delta) {
 
-		this._world.executeUnits(delta);
+		let gameOver = this._world.executeUnits(delta, this.scene);
+
+
+		if(gameOver) {
+			this._onGameOver();
+		}
 
 		this._hudObjects.forEach((value, index) => {
 			value.execute(delta);
 		});
+	}
 
+	clear() {
+		this._world.clear();
+		while(this._hudObjects.length > 0) {
+			this._hudObjects.splice(0, 1);
+		}
 	}
 }
 

@@ -2,16 +2,23 @@ import Trigonometry from "./Trigonometry";
 
 export default class GameUnit {
 
+
+
 	constructor(speed, rotationSpeed, x, y, scene, PIXI, tintColor) {
+		this.PIXI = PIXI;
 		this._speed = speed;
 		this._rotationSpeed = rotationSpeed;
-
+		this._aim = new PIXI.Point(80, 0);
 
 		this._sprite = new PIXI.Sprite();
 
 		let graphics = new PIXI.Graphics();
 		graphics.beginFill(0x999999);
-		graphics.drawRoundedRect(-16, -16, 32, 32, 5);
+
+
+		let rectangleBase = new PIXI.Rectangle(-16, -16, 32, 32);
+
+		graphics.drawRoundedRect(rectangleBase.x, rectangleBase.y, rectangleBase.width, rectangleBase.height, 5);
 
 		//turret
 		graphics.beginFill(0x000000);
@@ -20,23 +27,23 @@ export default class GameUnit {
 
 
 		//sight
-		let dist = 80;
+
 		let sigthSize = 5;
 
 		graphics.beginFill(0xff0000);
-		graphics.drawRect(dist, -sigthSize-3, 1, sigthSize);
-		graphics.drawRect(dist, 3, 1, sigthSize);
+		graphics.drawRect(this._aim.x, -sigthSize-3+this._aim.y, 1, sigthSize);
+		graphics.drawRect(this._aim.x, 3+this._aim.y, 1, sigthSize);
 
-		graphics.drawRect(dist-sigthSize-3, 0, sigthSize, 1);
-		graphics.drawRect(dist+3, 0, sigthSize, 1);
+		graphics.drawRect(this._aim.x-sigthSize-3, this._aim.y, sigthSize, 1);
+		graphics.drawRect(this._aim.x+3, this._aim.y, sigthSize, 1);
 
 
 		if(tintColor) {
 			graphics.tint = tintColor;
 		}
 
-
 		this._sprite.addChild(graphics);
+
 
 
 
@@ -48,6 +55,40 @@ export default class GameUnit {
 		this._destination = new PIXI.Point(x, y);
 
 		this._inPosition = true;
+	}
+
+
+	get sprite() {
+		return this._sprite;
+	}
+
+
+	hitted(point) {
+
+		let hit = false;
+		if(Math.abs(point.x - this.x) < 16 && Math.abs(point.y - this.y) < 16) {
+			hit = true;
+		}
+		return hit;
+	}
+
+
+	get aim() {
+
+		while(this._sprite.angle < 0) {
+			this._sprite.angle += 360;
+		}
+
+		this._sprite.angle %= 360;
+
+
+
+		let rad = Trigonometry.angleToRad(this._sprite.angle);
+
+		return {
+			x: (Math.cos(rad) * 80) + this.x,
+			y: (Math.sin(rad) * 80) + this.y
+		};
 	}
 
 	get inPosition() {
@@ -81,6 +122,8 @@ export default class GameUnit {
 
 	move(delta, destination) {
 
+
+
 		let vector = {
 			x: destination.x - this._sprite.x,
 			y: destination.y - this._sprite.y
@@ -106,13 +149,16 @@ export default class GameUnit {
 		}
 		else {
 			//in position
-			console.log("in position");
+			// console.log("in position");
 			this._sprite.x = destination.x;
 			this._sprite.y = destination.y;
 
 			this._inPosition = true;
 
 		}
+
+
+
 
 
 		// //
@@ -143,8 +189,10 @@ export default class GameUnit {
 		// 	this._sprite.y= this._destination.y;
 		// }
 	}
-	execute(delta) {
 
+
+
+	execute(delta) {
 
 
 	}
