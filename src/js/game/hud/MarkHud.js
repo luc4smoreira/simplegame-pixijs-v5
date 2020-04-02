@@ -17,11 +17,11 @@ export default class MarkHud {
 		this.mark.alpha = 1;
 	}
 
-	execute() {
+	execute(delta) {
 		if(this.mark.visible) {
 
 			if (this.mark.alpha > 0) {
-				this.mark.alpha -= 0.02;
+				this.mark.alpha -= 0.1;
 			} else {
 				this.mark.alpha = 0;
 				this.mark.visible = false;

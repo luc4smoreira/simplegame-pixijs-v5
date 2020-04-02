@@ -25,9 +25,9 @@ export default class Trigonometry {
 		if(vector.x < 0) {
 			angle+=180;
 		}
-		if(angle > 360 || angle < 0) {
-			console.log("Angle > 360 or < 0!!! "+angle);
-		}
+		// if(angle > 360 || angle < 0) {
+		// 	console.log("Angle > 360 or < 0!!! "+angle);
+		// }
 
 		return angle;
 	}

@@ -2,11 +2,10 @@ import Trigonometry from "./Trigonometry";
 
 export default class GameUnit {
 
-
-
-	constructor(speed, rotationSpeed, x, y, world, PIXI) {
+	constructor(speed, rotationSpeed, x, y, scene, PIXI, tintColor) {
 		this._speed = speed;
 		this._rotationSpeed = rotationSpeed;
+
 
 		this._sprite = new PIXI.Sprite();
 
@@ -17,6 +16,8 @@ export default class GameUnit {
 		//turret
 		graphics.beginFill(0x000000);
 		graphics.drawRoundedRect(-8, -5, 40, 10, 5);
+
+
 
 		//sight
 		let dist = 80;
@@ -30,22 +31,59 @@ export default class GameUnit {
 		graphics.drawRect(dist+3, 0, sigthSize, 1);
 
 
+		if(tintColor) {
+			graphics.tint = tintColor;
+		}
+
+
 		this._sprite.addChild(graphics);
+
+
 
 		this._sprite.anchor.set(0.5);
 		this._sprite.x = x;
 		this._sprite.y = y;
 
-		world.addChild(this._sprite);
+		scene.addChild(this._sprite);
 		this._destination = new PIXI.Point(x, y);
+
+		this._inPosition = true;
+	}
+
+	get inPosition() {
+		return this._inPosition;
+	}
+
+	get x() {
+		return this._sprite.x;
+	}
+
+	get y() {
+		return this._sprite.y;
+	}
+
+	getBounds() {
+		return this._sprite.getBounds();
+	}
+
+	get angle() {
+		return this._sprite.angle;
 	}
 
 
-	execute(delta) {
+	set id(id) {
+		this._id = id;
+	}
+	get id() {
+		return this._id;
+	}
+
+
+	move(delta, destination) {
 
 		let vector = {
-			x: this._destination.x - this._sprite.x,
-			y: this._destination.y - this._sprite.y
+			x: destination.x - this._sprite.x,
+			y: destination.y - this._sprite.y
 		};
 
 		//angle
@@ -58,6 +96,7 @@ export default class GameUnit {
 
 			this._sprite.angle = angle;
 
+
 			let component = Trigonometry.getAxisSpeed(vector, h, this._speed);
 
 			this._sprite.x += component.x;
@@ -68,15 +107,12 @@ export default class GameUnit {
 		else {
 			//in position
 			console.log("in position");
-			this._sprite.x = this._destination.x;
-			this._sprite.y = this._destination.y;
+			this._sprite.x = destination.x;
+			this._sprite.y = destination.y;
+
+			this._inPosition = true;
 
 		}
-
-
-
-
-
 
 
 		// //
@@ -106,11 +142,20 @@ export default class GameUnit {
 		// if(Math.abs(this._destination.y - this._sprite.y) < this._speed) {
 		// 	this._sprite.y= this._destination.y;
 		// }
+	}
+	execute(delta) {
+
+
 
 	}
 
 	setDestination(position) {
+		this._inPosition = false;
 		this._destination = position;
 	}
 
+
+	get destination() {
+		return this._destination;
+	}
 }

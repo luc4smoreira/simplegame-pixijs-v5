@@ -1,12 +1,13 @@
 import Scene from "../ui/Scene";
 import GameUnit from "../units/GameUnit";
 import MarkHud from "../hud/MarkHud";
+import World from "../world/World";
 
 export default class GameScene extends Scene{
 
 	constructor(PIXI, gameWidth, gameHeight) {
 		super(PIXI);
-		this._units = [];
+		this._world = new World();
 		this._hudObjects = [];
 
 		this.init(gameWidth, gameHeight);
@@ -16,12 +17,17 @@ export default class GameScene extends Scene{
 	init(gameWidth, gameHeight) {
 
 		let background = new this.PIXI.Graphics();
-		background.beginFill(0x339933);
+		background.beginFill(0xaaccaa);
 		background.drawRect(0, 0, gameWidth, gameHeight);
 		this.scene.addChild(background);
 
 		let unit1 = new GameUnit(5, 5, 100, 100, this.scene, this.PIXI);
 		this.addUnit(unit1);
+
+		let unit2 = new GameUnit(5, 5, 200, 200, this.scene, this.PIXI, 0xff0000);
+		this.addUnit(unit2);
+
+
 
 		this.scene.interactive = true;
 		this.scene.buttonMode = true;
@@ -45,7 +51,8 @@ export default class GameScene extends Scene{
 	}
 
 	addUnit(unit) {
-		this._units.push(unit);
+		let id = this._world.addUnit(unit);
+		unit.id = id;
 	}
 
 	addHudObject(object) {
@@ -55,9 +62,7 @@ export default class GameScene extends Scene{
 
 	execute(delta) {
 
-		this._units.forEach((value, index)=> {
-			value.execute(delta);
-		});
+		this._world.executeUnits(delta);
 
 		this._hudObjects.forEach((value, index) => {
 			value.execute(delta);
