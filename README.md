@@ -1,6 +1,7 @@
 # simplegame-pixijs-v5
 
-This project was created with 2 purposes: 
+Simple game. This project was created with 2 purposes: 
+
 1. Practice coding with ES6+, Pixijs v5 and Webpack
 2. Help others to learn PixiJS v5
 
@@ -15,5 +16,5 @@ This project was created with 2 purposes:
 
 # Build
   1. Ater installation, execute command line: npm run build
-  2. The version will available inside folder dist
+  2. The version will be available inside folder dist
   
