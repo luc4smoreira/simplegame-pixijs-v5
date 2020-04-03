@@ -1,12 +1,18 @@
 import Trigonometry from "./Trigonometry";
 
+const states = {
+
+}
+
 export default class GameUnit {
 
 
 
-	constructor(speed, rotationSpeed, x, y, scene, PIXI, tintColor, explosionTexure) {
+	constructor(speed, rotationSpeed, x, y, scene, PIXI, tintColor, explosionTexure, type) {
 		this._explosionMc = new PIXI.AnimatedSprite(explosionTexure);
 		this._state = 0;
+		this._type = type;
+
 
 		this._dead = false;
 		this.PIXI = PIXI;
@@ -96,15 +102,8 @@ export default class GameUnit {
 	}
 
 
+
 	get aim() {
-
-		while(this._sprite.angle < 0) {
-			this._sprite.angle += 360;
-		}
-
-		this._sprite.angle %= 360;
-
-
 
 		let rad = Trigonometry.angleToRad(this._sprite.angle);
 
@@ -145,41 +144,74 @@ export default class GameUnit {
 
 	move(delta, destination) {
 
+		if(this._state === 0) {
+			this.sprite.angle = Trigonometry.adjustAngle(this.sprite.angle);
+
+			let vector = {
+				x: destination.x - this._sprite.x,
+				y: destination.y - this._sprite.y
+			};
+
+			//angle
+			let angle = Trigonometry.getAngle(vector);
+
+			let h = Trigonometry.getDistance(vector);
 
 
-		let vector = {
-			x: destination.x - this._sprite.x,
-			y: destination.y - this._sprite.y
-		};
-
-		//angle
-		let angle = Trigonometry.getAngle(vector);
-
-		let h = Trigonometry.getDistance(vector);
+			if (h > this._speed) {
 
 
-		if(h > this._speed) {
-
-			this._sprite.angle = angle;
+				let angDif = Math.abs(this._sprite.angle - angle);
 
 
-			let component = Trigonometry.getAxisSpeed(vector, h, this._speed);
+				if (angDif < (this._rotationSpeed + 5)) {
+					this._sprite.angle = angle;
 
-			this._sprite.x += component.x;
-			this._sprite.y += component.y;
+					let component = Trigonometry.getAxisSpeed(vector, h, this._speed);
+
+					this._sprite.x += component.x;
+					this._sprite.y += component.y;
+				} else {
+					if (this._type === "player") {
+						console.log(`sprite.angle: ${this.sprite.angle} angle: ${angle} dif: ${angDif}`);
+					}
+
+					let quadDest = Trigonometry.getQuadrant(angle);
+					let quadOrigin = Trigonometry.getQuadrant(this._sprite.angle);
 
 
+					let increaseAngle = true;
+					if (quadOrigin === quadDest) {
+						if (this._sprite.angle > angle) {
+							increaseAngle = false;
+						}
+					} else if (quadOrigin === 1 && quadDest === 4) {
+						increaseAngle = false;
+					} else if (quadOrigin === quadDest + 1) {
+						increaseAngle = false;
+					}
+
+					if (increaseAngle) {
+						this._sprite.angle += this._rotationSpeed;
+					} else {
+						this._sprite.angle -= this._rotationSpeed;
+					}
+
+
+				}
+
+
+			} else {
+				//in position
+				console.log("in position: " + this.id);
+				this._sprite.x = destination.x;
+				this._sprite.y = destination.y;
+
+				this._inPosition = true;
+
+
+			}
 		}
-		else {
-			//in position
-			// console.log("in position");
-			this._sprite.x = destination.x;
-			this._sprite.y = destination.y;
-
-			this._inPosition = true;
-
-		}
-
 
 
 
@@ -216,12 +248,27 @@ export default class GameUnit {
 
 
 	execute(delta) {
+
+
+
+
 		if(this._state === 1) {
 
 			if(this._explosionMc.currentFrame === this._explosionMc.totalFrames -1 ) {
 				this._explosionMc.stop();
 				this._dead = true;
 			}
+		}
+		else {
+			if(this._type === "IA") {
+				if(this._inPosition) {
+					this.setDestination({
+						x: Math.floor(Math.random() * 300) + 100,
+							y: Math.floor(Math.random() * 300) + 100,
+					});
+				}
+			}
+
 		}
 
 	}

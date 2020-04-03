@@ -39,10 +39,10 @@ export default class GameScene extends Scene{
 		background.drawRect(0, 0, gameWidth, gameHeight);
 		this.scene.addChild(background);
 
-		let unit1 = new GameUnit(5, 5, 250, 300, this.scene, this.PIXI, 0xffffff,this.explosionTextures);
+		let unit1 = new GameUnit(5, 1, 50, 50, this.scene, this.PIXI, 0xffffff,this.explosionTextures, "player");
 		this.addUnit(unit1);
 
-		let unit2 = new GameUnit(5, 5, 200, 200, this.scene, this.PIXI, 0xff0000, this.explosionTextures);
+		let unit2 = new GameUnit(1, 1, 200, 200, this.scene, this.PIXI, 0xff0000, this.explosionTextures, "IA");
 		this.addUnit(unit2);
 
 
