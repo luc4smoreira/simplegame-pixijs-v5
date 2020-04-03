@@ -18,22 +18,24 @@ window.onload = function() {
 	app.stage.addChild(main.scene);
 	main.center(app);
 
-	let gameOverScene = new GameOverScene(PIXI);
+	let gameOverScene = new GameOverScene(PIXI, gameWidth, gameHeight);
 	gameOverScene.onClickButton(function() {
 		UI.clearDisplayObject(app.stage);
 
 		app.stage.addChild(main.scene);
 	});
-	gameOverScene.center(app);
 
 	let loader = PIXI.Loader.shared;
 
 
 	let game = new GameScene(PIXI, gameWidth, gameHeight, loader);
-	game.onGameOver(function() {
+	game.onGameOver(function(playerDead) {
+
 		UI.clearDisplayObject(app.stage);
 
 		app.ticker.remove(gameLoop);
+
+		gameOverScene.updateMessage(playerDead);
 
 		game.clear();
 

@@ -39,8 +39,8 @@ export default class GameScene extends Scene{
 		background.drawRect(0, 0, gameWidth, gameHeight);
 		this.scene.addChild(background);
 
-		let unit1 = new GameUnit(5, 1, 50, 50, this.scene, this.PIXI, 0xffffff,this.explosionTextures, "player");
-		this.addUnit(unit1);
+		this._player = new GameUnit(5, 10, 50, 50, this.scene, this.PIXI, 0xffffff,this.explosionTextures, "player");
+		this.addUnit(this._player);
 
 		let unit2 = new GameUnit(1, 1, 200, 200, this.scene, this.PIXI, 0xff0000, this.explosionTextures, "IA");
 		this.addUnit(unit2);
@@ -65,8 +65,7 @@ export default class GameScene extends Scene{
 
 			mark.showMark(pointFloor);
 
-			// console.log(`point:(${pointFloor.x}, ${pointFloor.y})`);
-			 unit1.setDestination(pointFloor);
+			 this._player.setDestination(pointFloor);
 		});
 	}
 
@@ -91,7 +90,7 @@ export default class GameScene extends Scene{
 
 
 		if(gameOver) {
-			this._onGameOver();
+			this._onGameOver(this._player.dead);
 		}
 
 		this._hudObjects.forEach((value, index) => {
