@@ -1,5 +1,5 @@
-import Scene from "../ui/Scene";
-import {UI} from "../ui/UI";
+import Scene from "../../framework/Scene";
+import {UI} from "../../framework/UI";
 
 export default class GameOverScene extends Scene {
 

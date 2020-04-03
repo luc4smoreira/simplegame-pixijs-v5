@@ -1,4 +1,4 @@
-import Scene from "../ui/Scene";
+import Scene from "../../framework/Scene";
 import GameUnit from "../units/GameUnit";
 import MarkHud from "../hud/MarkHud";
 import World from "../world/World";

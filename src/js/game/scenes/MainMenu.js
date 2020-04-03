@@ -1,5 +1,5 @@
-import {UI} from "../ui/UI";
-import Scene from "../ui/Scene"
+import {UI} from "../../framework/UI";
+import Scene from "../../framework/Scene"
 
 export default class MainMenu extends Scene {
 

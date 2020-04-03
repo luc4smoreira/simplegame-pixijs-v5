@@ -1,7 +1,7 @@
 import * as PIXI from "pixi.js"
 
 import MainMenu from "./game/scenes/MainMenu"
-import {UI} from "./game/ui/UI";
+import {UI} from "./framework/UI";
 import GameScene from "./game/scenes/GameScene";
 import GameOverScene from "./game/scenes/GameOverScene";
 

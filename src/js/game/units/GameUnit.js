@@ -1,4 +1,4 @@
-import Trigonometry from "./Trigonometry";
+import Trigonometry from "../../framework/Trigonometry";
 
 const states = {
 
