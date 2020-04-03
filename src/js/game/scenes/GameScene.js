@@ -37,7 +37,7 @@ export default class GameScene extends Scene{
 
 
 
-		this.scene.on("click", (event) => {
+		this.scene.on("pointerdown", (event) => {
 			let point = event.data.getLocalPosition(this.scene);
 
 			let pointFloor = point.copyFrom(point);

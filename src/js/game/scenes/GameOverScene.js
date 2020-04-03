@@ -11,13 +11,13 @@ export default class GameOverScene extends Scene {
 
 	init() {
 
-		this.btFinish = UI.createButton(this.PIXI, "Game Over");
+		this.btFinish = UI.createButton(this.PIXI, "Game Over", 0xaa0000);
 
 		this._scene.addChild(this.btFinish.container);
 	}
 
 	onClickButton(callback) {
-		this.btFinish.container.on('click', callback);
+		this.btFinish.container.on('pointerdown', callback);
 	}
 
 }

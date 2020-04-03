@@ -13,7 +13,7 @@ class UI {
 	}
 
 
-	static createButton(PIXI, text) {
+	static createButton(PIXI, text, color) {
 
 		let container = new  PIXI.Container();
 		let txt = new PIXI.Text(text, {fontSize:40, fill: 0xffffff});

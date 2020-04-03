@@ -11,13 +11,13 @@ export default class MainMenu extends Scene {
 
 	init() {
 
-		this.btStartGame = UI.createButton(this.PIXI, "start game");
+		this.btStartGame = UI.createButton(this.PIXI, "start game", 0xffffff);
 
 		this._scene.addChild(this.btStartGame.container);
 	}
 
 	onStartGame(callback) {
-		this.btStartGame.container.on('click', callback);
+		this.btStartGame.container.on('pointerdown', callback);
 	}
 
 }
