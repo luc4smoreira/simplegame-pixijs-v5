@@ -16,7 +16,7 @@ class UI {
 	static createButton(PIXI, text, color) {
 
 		let container = new  PIXI.Container();
-		let txt = new PIXI.Text(text, {fontSize:40, fill: 0xffffff});
+		let txt = new PIXI.Text(text, {fontSize:40, fill: color});
 
 		let graphics = new PIXI.Graphics();
 		graphics.beginFill(0x000000);
