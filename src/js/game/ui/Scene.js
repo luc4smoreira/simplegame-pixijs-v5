@@ -19,4 +19,8 @@ export default class Scene {
 		this._scene.y = app.view.height / 2  - this._scene.height / 2;
 
 	}
+
+	onLoaded() {
+
+	}
 }

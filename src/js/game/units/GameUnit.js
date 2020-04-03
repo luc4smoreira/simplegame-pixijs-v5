@@ -4,7 +4,11 @@ export default class GameUnit {
 
 
 
-	constructor(speed, rotationSpeed, x, y, scene, PIXI, tintColor) {
+	constructor(speed, rotationSpeed, x, y, scene, PIXI, tintColor, explosionTexure) {
+		this._explosionMc = new PIXI.AnimatedSprite(explosionTexure);
+		this._state = 0;
+
+		this._dead = false;
 		this.PIXI = PIXI;
 		this._speed = speed;
 		this._rotationSpeed = rotationSpeed;
@@ -38,9 +42,9 @@ export default class GameUnit {
 		graphics.drawRect(this._aim.x+3, this._aim.y, sigthSize, 1);
 
 
-		if(tintColor) {
-			graphics.tint = tintColor;
-		}
+
+		graphics.tint = tintColor;
+
 
 		this._sprite.addChild(graphics);
 
@@ -52,9 +56,19 @@ export default class GameUnit {
 		this._sprite.y = y;
 
 		scene.addChild(this._sprite);
+
+		console.log(this._explosionMc);
 		this._destination = new PIXI.Point(x, y);
 
 		this._inPosition = true;
+	}
+
+	get dead() {
+		return this._dead;
+	}
+
+	set dead(value) {
+		this._dead = value;
 	}
 
 
@@ -66,8 +80,17 @@ export default class GameUnit {
 	hitted(point) {
 
 		let hit = false;
+
+
 		if(Math.abs(point.x - this.x) < 16 && Math.abs(point.y - this.y) < 16) {
 			hit = true;
+			if(this._state === 0 ) {
+				this.sprite.addChild(this._explosionMc);
+				this._explosionMc.anchor.set(0.5);
+				this._explosionMc.gotoAndPlay(1);
+				this._state = 1;
+			}
+
 		}
 		return hit;
 	}
@@ -193,7 +216,13 @@ export default class GameUnit {
 
 
 	execute(delta) {
+		if(this._state === 1) {
 
+			if(this._explosionMc.currentFrame === this._explosionMc.totalFrames -1 ) {
+				this._explosionMc.stop();
+				this._dead = true;
+			}
+		}
 
 	}
 

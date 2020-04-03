@@ -36,10 +36,11 @@ export default class World {
 
 			unit.execute(delta);
 
-			let unitHitted = this.hitUnit(index);
-			if(unitHitted) {
-				deadUnits.push(unitHitted);
+			if(unit.dead) {
+				deadUnits.push(unit);
 			}
+
+			this.hitUnit(index);
 		});
 
 		deadUnits.forEach((unitDead)=>{
@@ -75,6 +76,7 @@ export default class World {
 
 			if(this._units[i].hitted(point)) {
 				unitHitted = this._units[i];
+				// unitHitted.dead = true;
 				break; //accept only 1 hit
 			}
 		}

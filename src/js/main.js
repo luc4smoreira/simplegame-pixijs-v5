@@ -26,10 +26,10 @@ window.onload = function() {
 	});
 	gameOverScene.center(app);
 
+	let loader = PIXI.Loader.shared;
 
 
-
-	let game = new GameScene(PIXI, gameWidth, gameHeight);
+	let game = new GameScene(PIXI, gameWidth, gameHeight, loader);
 	game.onGameOver(function() {
 		UI.clearDisplayObject(app.stage);
 
@@ -40,19 +40,33 @@ window.onload = function() {
 		app.stage.addChild(gameOverScene.scene);
 	});
 
-	//
-	main.onStartGame(function() {
-		UI.clearDisplayObject(app.stage);
 
-		// app.stage.addChild(winScene.scene);
+	loader.load();
+	loader.onError.add(function(e) {
+		console.log(e);
+		alert("Error");
 
-		app.stage.addChild(game.scene);
+	});
 
-		game.init(gameWidth, gameHeight);
+	loader.onComplete.add(function() {
+		//
+		main.onLoaded();
+		game.onLoaded();
 
-		app.ticker.add(gameLoop)
+		main.onStartGame(function() {
+			UI.clearDisplayObject(app.stage);
+
+			// app.stage.addChild(winScene.scene);
+
+			app.stage.addChild(game.scene);
 
 
+			game.init(gameWidth, gameHeight);
+
+			app.ticker.add(gameLoop)
+
+
+		});
 	});
 
 

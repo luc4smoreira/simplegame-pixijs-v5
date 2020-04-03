@@ -5,12 +5,32 @@ import World from "../world/World";
 
 export default class GameScene extends Scene{
 
-	constructor(PIXI, gameWidth, gameHeight) {
+	constructor(PIXI, gameWidth, gameHeight, loader) {
 		super(PIXI);
 		this._world = new World();
 		this._hudObjects = [];
 
+
+
+		//extracted from PIXI examples
+		loader.add('explosion', 'assets/spritesheet/explosion-mc.json');
+
 	}
+
+
+
+	onLoaded() {
+		// create an array to store the textures (
+		const explosionTextures = [];
+		let i;
+
+		for (i = 0; i < 26; i++) {
+			const texture = this.PIXI.Texture.from(`Explosion_Sequence_A ${i + 1}.png`);
+			explosionTextures.push(texture);
+		}
+		this.explosionTextures = explosionTextures;
+	}
+
 
 	init(gameWidth, gameHeight) {
 
@@ -19,10 +39,10 @@ export default class GameScene extends Scene{
 		background.drawRect(0, 0, gameWidth, gameHeight);
 		this.scene.addChild(background);
 
-		let unit1 = new GameUnit(5, 5, 250, 300, this.scene, this.PIXI);
+		let unit1 = new GameUnit(5, 5, 250, 300, this.scene, this.PIXI, 0xffffff,this.explosionTextures);
 		this.addUnit(unit1);
 
-		let unit2 = new GameUnit(5, 5, 200, 200, this.scene, this.PIXI, 0xff0000);
+		let unit2 = new GameUnit(5, 5, 200, 200, this.scene, this.PIXI, 0xff0000, this.explosionTextures);
 		this.addUnit(unit2);
 
 
