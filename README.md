@@ -11,10 +11,10 @@ Simple game. This project was created with 2 purposes:
   3. On project folder execute command line: npm install
   
 # Dev server
-  1. Ater installation, execute command line: npm run open
-  2. The server will open your browser with the last saved version of your code.
+  1. After installation, execute command line: npm run open
+  2. The server will open your browser with the last saved version of your code and it will auto refresh when you modify project any file
 
 # Build
-  1. Ater installation, execute command line: npm run build
+  1. After installation, execute command line: npm run build
   2. The version will be available inside folder dist
   
